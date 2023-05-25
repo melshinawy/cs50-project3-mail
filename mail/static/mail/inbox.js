@@ -32,17 +32,26 @@ function compose_email() {
 function load_mailbox(mailbox) {
   
   // Show the mailbox and hide other views
-  document.querySelector('#emails-view').style.display = 'block';
+  emailsView = document.querySelector('#emails-view')
+  emailsView.style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
+
+  let table = document.createElement('table');
+  let tr = document.createElement('tr');
+  let thead = document.createElement('th');
+  
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
 
-  fetch('/emails/inbox')
+  fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
-    console.log(emails)
-  })
+    console.log(emails[0])
+    
+
+    emailsView.append(emails[0].sender)
+  });
 }
 
 function send(event) {
